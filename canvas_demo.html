@@ -1,0 +1,71 @@
+<html>
+    <body style="margin: 0px; background-color: black; display: flex; width: 100vw; height:100vh; justify-content: center; align-items: center;">
+        <canvas style="height:min(100vh, 100vw); width:min(100vh, 100vw);" id="canvas" width="320" height="320"></canvas>
+        <script>
+            let ctx2d = document.getElementById("canvas").getContext("2d")
+            let theta = 0
+            let delta = 0.1
+            let maxSize = 1
+            let q = []
+            let xOffset = 155
+            let yOffset = 140
+            let nonLinear = 0.1
+
+            function getR(t){
+                return 2 - (2 * Math.sin(t)) + Math.cos(2 * t) - (2 * Math.abs(Math.cos(t)))
+            }
+
+            async function draw(){
+
+                if(maxSize < 100)
+                    maxSize += 0.05
+
+                if(nonLinear < 1.5)
+                    nonLinear += 0.01
+
+                ctx2d.fillStyle = "#000000";
+                ctx2d.fillRect(0, 0, 320, 320)
+
+                ctx2d.strokeStyle = "#FFFFFF"
+                ctx2d.lineWidth = 5
+
+                ctx2d.fillStyle = "#FFFFFF";
+                ctx2d.font = "19px Arial";
+                ctx2d.globalAlpha = 1
+                ctx2d.fillText("R = 2 - 2sin(θ) + cos(2θ) - 2|cos(θ)|",10,80);
+                ctx2d.stroke()
+                let prevTheta = theta
+                
+                q.forEach((x, i) => {
+
+                    r0 = getR(prevTheta)
+                    r1 = getR(x)
+
+                    x00 = Math.cos(prevTheta) * r0
+                    y01 = Math.sin(prevTheta) * r0
+                    x10 = Math.cos(x) * r1
+                    y11 = Math.sin(x) * r1
+
+                    ctx2d.beginPath()
+                    ctx2d.globalAlpha = Math.pow(1 - (i/maxSize), nonLinear);
+                    ctx2d.moveTo((x00 * 50) + xOffset, (-y01 * 50) + yOffset);
+                    ctx2d.lineTo((x10 * 50) + xOffset, (-y11 * 50) + yOffset);
+                    ctx2d.stroke()
+
+                    prevTheta = x
+                })
+
+                q.unshift(theta)
+                theta += delta
+
+                if(q.length > maxSize)
+                    q.pop()
+
+                
+                window.requestAnimationFrame(draw)
+            }
+
+            draw()
+        </script>
+    </body>
+</html>
