@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2003 · 普通人家 / 模型审核</title>
+<link rel="icon" href="data:,">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#252924;color:#eee8d7;font-family:system-ui,"Microsoft YaHei",sans-serif}canvas{display:block;width:100vw;height:100vh}header{position:fixed;top:22px;left:24px;pointer-events:none}h1{font-size:22px;letter-spacing:3px;margin:0 0 7px;font-weight:500}header p{font-size:12px;color:#c7c1ad;margin:0}nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:8px;background:#252924e8;border:1px solid #73726477;border-radius:8px;max-width:95vw;flex-wrap:wrap;justify-content:center}button{background:transparent;color:#e5e0d0;border:1px solid #686b5e;padding:9px 14px;border-radius:4px;cursor:pointer;font:inherit;font-size:13px}button:hover,button.active{background:#ddd2b5;color:#282b24;border-color:#ddd2b5}#status{position:fixed;left:24px;bottom:100px;font-size:12px;max-width:80vw;color:#e1d6bb;background:#252924ab;padding:8px;border-radius:3px}#help{position:fixed;right:20px;top:22px;font-size:12px;text-align:right;color:#c7c1ad}a{color:inherit}@media(max-width:650px){#help{display:none}header{top:15px;left:15px}h1{font-size:18px}button{padding:8px 10px}}
+</style>
+<style>html,body{overflow:hidden}#status{bottom:auto;top:124px;pointer-events:none}</style>
+<header style="background:#252924cb;padding:12px 16px;border-radius:5px"><h1>2003 · 普通人家</h1><p>老木家具 / 水磨石 / 花布 / 午后日光</p></header>
+<div id="help">拖动旋转 · 右键平移 · 滚轮缩放<br>材质来自 ambientCG（CC0）及原创细节贴图</div>
+<div id="status">正在读取模型与 PBR 贴图…</div>
+<nav aria-label="模型视角">
+<a href="./village.html" style="padding:9px 12px;font-size:13px">走到村里</a>
+<select id="details" aria-label="近距离细节检查" style="max-width:170px;background:#252924;color:#eee8d7;border:1px solid #686b5e;border-radius:4px;padding:8px"><option value="">近距离检查…</option><option value="calendar">日历固定</option><option value="fan">风扇支架</option><option value="fanhead">风扇前后网罩</option><option value="washboard">搓衣板与盆沿</option><option value="jars">调料架与瓶子</option><option value="kitchentap">厨房水龙头</option><option value="bathtap">卫生间水龙头</option><option value="vases">柜内花瓶</option><option value="wooddetail">木纹法线对比</option></select>
+<button id="normals">法线：开启</button>
+<a href="./detail_review.html" style="padding:9px 12px;font-size:13px">细节检查记录</a>
+<button data-view="exterior">外观</button><button data-view="living">客厅</button><button data-view="reverse">木沙发</button><button data-view="bedroom">卧室</button><button data-view="bathroom">卫生间</button><button data-view="kitchen">厨房</button><button data-view="plan">平面布局</button><button id="roof">隐藏屋顶</button>
+</nav>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module" src="./viewer.js?v=wasd-only-2"></script>
+</html>
