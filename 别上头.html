@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101114">
+<meta name="description" content="一款零联网、打开即玩的反应力小游戏。等信号变绿，马上点！">
+<title>别上头 — 反应力挑战</title>
+<style>
+  :root{color-scheme:dark;--bg:#101114;--panel:#191a20;--muted:#8d909c;--white:#f5f6f8;--lime:#c5ff57;--red:#ff5964;--blue:#8d79ff}
+  *{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 50% 0%,#24232d 0%,var(--bg) 55%);color:var(--white);font:16px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;display:flex;justify-content:center;align-items:center;padding:24px}
+  button{font:inherit;color:inherit} .app{width:min(100%,520px)}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;letter-spacing:.12em}.mark{width:28px;height:28px;border-radius:9px;background:var(--lime);color:#141609;display:grid;place-items:center;font-size:17px} .best{font-size:12px;color:var(--muted)}.best b{color:var(--white);font-variant-numeric:tabular-nums}
+  .card{background:linear-gradient(145deg,#1d1e25,#17181d);border:1px solid #ffffff10;border-radius:28px;padding:clamp(22px,6vw,34px);box-shadow:0 24px 80px #0007}.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--muted);font-weight:750}.title{font-size:clamp(30px,8vw,42px);line-height:1.12;letter-spacing:-.05em;margin:10px 0 8px;font-weight:900}.sub{color:#a5a7b0;margin:0;font-size:14px}.stage{margin:26px 0 18px;min-height:270px;border-radius:22px;background:#111216;border:1px solid #ffffff0c;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .18s,border .18s,transform .12s;position:relative;overflow:hidden;outline:none}.stage:active{transform:scale(.99)}.stage.waiting{background:radial-gradient(ellipse at center,#522127,#24171c 65%,#151418);border-color:#ff596455}.stage.ready{background:radial-gradient(ellipse at center,#38521b,#1e2918 70%,#141711);border-color:#c5ff5780;box-shadow:inset 0 0 70px #c5ff5715}.stage.done{background:radial-gradient(ellipse at center,#292544,#191821 72%,#141418);border-color:#8d79ff66}.stage .big{font-size:clamp(24px,6vw,32px);font-weight:900;letter-spacing:-.04em}.stage .hint{font-size:13px;color:#a3a4ae;margin-top:8px}.stage .time{font-size:clamp(64px,18vw,86px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.07em}.stage .time small{font-size:22px;letter-spacing:0;color:#9fa0ad;margin-left:4px}.pulse{position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid #c5ff5730;animation:pulse 1.25s ease-out infinite;pointer-events:none}@keyframes pulse{from{transform:scale(.5);opacity:.85}to{transform:scale(1.5);opacity:0}}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px}.rounds{display:flex;gap:7px}.dot{width:26px;height:6px;border-radius:9px;background:#34353d;transition:.2s}.dot.active{background:var(--lime)}.dot.fail{background:var(--red)}.roundlabel{font-size:12px;color:var(--muted)}.actions{margin-top:18px;display:flex;gap:10px}.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer;transition:transform .12s,filter .12s}.btn:active{transform:scale(.97)}.primary{background:var(--lime);color:#141609;flex:1}.secondary{background:#292a32;color:#e8e9ed}.btn:hover{filter:brightness(1.07)}.hidden{display:none!important}.result{margin-top:18px;padding:18px;border-radius:18px;background:#ffffff08;display:flex;align-items:center;justify-content:space-between;gap:12px}.result strong{font-size:24px;font-variant-numeric:tabular-nums}.result small{display:block;color:var(--muted);font-size:11px}.result .rank{font-size:14px;color:var(--lime);font-weight:800;text-align:right}.foot{text-align:center;color:#666873;font-size:11px;margin:16px 0 0} kbd{font:inherit;border:1px solid #555762;border-radius:5px;padding:0 5px;color:#c5c6cd}
+  @media(max-width:420px){body{padding:16px}.stage{min-height:240px}.card{border-radius:23px}.result{align-items:flex-start}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header><div class="brand"><span class="mark">↯</span> 一秒上头</div><div class="best">个人最佳 <b id="best">—</b></div></header>
+  <section class="card" aria-label="反应力挑战">
+    <div class="eyebrow">反应力挑战 · 5 回合</div>
+    <h1 class="title">别上头。</h1>
+    <p class="sub">等红色变绿，立刻点。手快不算，抢跑算输。</p>
+    <div class="stage" id="stage" role="button" tabindex="0" aria-label="游戏区域">
+      <div class="big" id="message">准备好了吗？</div>
+      <div class="hint" id="hint">点击下方按钮开始挑战</div>
+    </div>
+    <div class="row"><div class="rounds" id="rounds" aria-label="回合进度"></div><span class="roundlabel" id="roundLabel">等你开局</span></div>
+    <div class="actions"><button class="btn primary" id="start">开始挑战</button><button class="btn secondary hidden" id="share">晒一下 ↗</button></div>
+    <div class="result hidden" id="result"><div><small>本局平均反应</small><strong id="score">—</strong></div><div class="rank" id="rank">—</div></div>
+  </section>
+  <p class="foot">零联网 · 零广告 · 纯拼手速　<kbd>空格</kbd> 也能玩</p>
+</main>
+<script>
+(()=>{
+  const $=s=>document.querySelector(s), stage=$('#stage'), message=$('#message'), hint=$('#hint'), start=$('#start'), share=$('#share'), result=$('#result'), score=$('#score'), rank=$('#rank'), roundLabel=$('#roundLabel'), rounds=$('#rounds'), bestEl=$('#best');
+  let state='idle', round=0, times=[], timer=null, readyAt=0, best=Number(localStorage.getItem('onesec-best')||0), lastAverage=0;
+  const fmt=n=>`${n} ms`; bestEl.textContent=best?fmt(best):'—';
+  rounds.innerHTML=Array.from({length:5},()=>'<i class="dot"></i>').join('');
+  const dots=()=>[...rounds.children];
+  function reset(){clearTimeout(timer);state='idle';round=0;times=[];stage.className='stage';message.className='big';message.textContent='准备好了吗？';hint.textContent='点击下方按钮开始挑战';roundLabel.textContent='等你开局';dots().forEach(d=>d.className='dot');start.textContent='开始挑战';start.classList.remove('hidden');share.classList.add('hidden');result.classList.add('hidden')}
+  function begin(){if(state==='wait'||state==='ready')return;clearTimeout(timer);state='wait';round=0;times=[];start.classList.add('hidden');share.classList.add('hidden');result.classList.add('hidden');next()}
+  function next(){state='wait';stage.className='stage waiting';message.className='big';message.textContent='稳住…';hint.textContent='看到绿色之前别点';roundLabel.textContent=`第 ${round+1} / 5 回合`;dots().forEach((d,i)=>d.className=i<round?'dot active':'dot');const delay=900+Math.random()*2600;timer=setTimeout(()=>{if(state!=='wait')return;state='ready';stage.className='stage ready';message.className='big';message.textContent='现在！';hint.textContent='快点！';readyAt=performance.now()},delay)}
+  function tap(){if(state==='wait'){clearTimeout(timer);state='idle';stage.className='stage';message.textContent='抢跑了！';hint.textContent='太心急啦，再来一局';roundLabel.textContent='本局作废';dots()[round].className='dot fail';start.textContent='再来一次';start.classList.remove('hidden');return}if(state==='ready'){const t=Math.round(performance.now()-readyAt);times.push(t);dots()[round].className='dot active';round++;if(round===5){finish();return}state='pause';stage.className='stage done';message.className='time';message.innerHTML=`${t}<small>ms</small>`;hint.textContent='漂亮！继续下一回合';roundLabel.textContent=`第 ${round} / 5 回合完成`;timer=setTimeout(next,750);return}if(state==='idle'&&start.classList.contains('hidden'))reset()}
+  function finish(){state='finished';lastAverage=Math.round(times.reduce((a,b)=>a+b,0)/times.length);stage.className='stage done';message.className='big';message.textContent='挑战完成';hint.textContent=`最快 ${Math.min(...times)} ms · 最慢 ${Math.max(...times)} ms`;roundLabel.textContent='五回合已完成';score.textContent=fmt(lastAverage);rank.textContent=lastAverage<180?'闪电手 ⚡':lastAverage<240?'快得离谱 ✨':lastAverage<320?'反应在线 👀':'再练一把 💪';result.classList.remove('hidden');share.classList.remove('hidden');start.textContent='再来一局';start.classList.remove('hidden');if(!best||lastAverage<best){best=lastAverage;localStorage.setItem('onesec-best',String(best));bestEl.textContent=fmt(best)}}
+  async function shareScore(){const text=`我玩「别上头」5 回合平均 ${lastAverage} ms！你能赢我吗？`;try{if(navigator.share)await navigator.share({title:'别上头 — 反应力挑战',text});else{await navigator.clipboard.writeText(text);share.textContent='已复制 ✓';setTimeout(()=>share.textContent='晒一下 ↗',1500)}}catch(e){}}
+  start.addEventListener('click',()=>state==='finished'||state==='idle'?begin():null);stage.addEventListener('click',tap);share.addEventListener('click',shareScore);document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat){e.preventDefault();if(state==='idle'||state==='finished')begin();else tap()}});reset();
+})();
+</script>
+</body>
+</html>
